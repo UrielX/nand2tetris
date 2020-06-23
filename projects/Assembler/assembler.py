@@ -2,8 +2,9 @@ import time
 from parser import Parser
 from symbol_table import SymbolTable
 from translator import Translator, convert_to_bin
+from timeit import default_timer as timer
 
-start_time = time.time()
+start = timer()
 
 # Opens and cleans the source assembly program.
 # Exits the program if an invalid path to a file is provided.
@@ -95,5 +96,7 @@ def create_output_file(path_name):
 output = get_output_file_path(source_file)
 create_output_file(output)
 
+end = timer()
+
 print(
-    f'Assembly program successfuly parsed in {time.time() - start_time:.2f} seconds')
+    f'Assembly program successfuly parsed in {end - start:.2f} seconds')
