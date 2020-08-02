@@ -25,8 +25,8 @@ class Translator:
     def comp_to_bin(self, comp_mnemonics):
         comp_bits = ''
 
+        # Set the a-bit in the comp bits to 1 or 0 depending on the command
         if comp_mnemonics in comp_dict_A1.keys():
-            # Set the a-bit in the comp bits to 1 or 0 depending on the command
             comp_bits += '1' + comp_dict_A1[comp_mnemonics]
         else:
             comp_bits += '0' + comp_dict_A0[comp_mnemonics]

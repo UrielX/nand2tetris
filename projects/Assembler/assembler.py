@@ -1,8 +1,8 @@
-import time
 from parser import Parser
+from timeit import default_timer as timer
+
 from symbol_table import SymbolTable
 from translator import Translator, convert_to_bin
-from timeit import default_timer as timer
 
 start = timer()
 
@@ -15,7 +15,6 @@ translated_program = []
 # Create the SymbolTable and add the built-in symbols
 symbol_table = SymbolTable()
 
-
 # Do a first run of the assembly program.
 # Scan for (XXX) labels and add them to symbol_table
 while not assembly_program.is_parsed():
@@ -23,16 +22,14 @@ while not assembly_program.is_parsed():
     command_type = assembly_program.get_command_type(current_command)
 
     if command_type == 'L_COMMAND':
-        label_name = current_command[1:len(current_command)-1]
+        label_name = current_command[1:len(current_command) - 1]
 
         if not symbol_table.contains_symbol(label_name):
             symbol_table.add_label(label_name, assembly_program.line_counter)
 
-
 # Removes all labels from assembly program and restarts it
 assembly_program.assembly_program = assembly_program.remove_labels()
 assembly_program.line_counter = 0
-
 
 # Do a second run of the assembly program
 # Adds all @symbols to symbol table, with a corresponding address starting from 16
@@ -50,21 +47,21 @@ while not assembly_program.is_parsed():
             translated_program.append(convert_to_bin(symbol))
         elif not symbol_table.contains_symbol(symbol):
             symbol_table.add_symbol(symbol)
-            translated_program.append(convert_to_bin(
-                symbol_table.get_address(symbol)))
+            translated_program.append(
+                convert_to_bin(symbol_table.get_address(symbol)))
         else:
-            translated_program.append(convert_to_bin(
-                symbol_table.get_address(symbol)))
+            translated_program.append(
+                convert_to_bin(symbol_table.get_address(symbol)))
 
-    else:   # It's a C_COMMAND
+    else:  # It's a C_COMMAND
         dest_mnemonics = assembly_program.get_dest_mnemonics(current_command)
         comp_mnemonics = assembly_program.get_comp_mnemonics(current_command)
         jump_mnemonics = assembly_program.get_jump_mnemonics(current_command)
 
         # Generate a Translator object,
         # which contains the converted command mnemonics to bits
-        mnemonics_to_bin = Translator(
-            dest_mnemonics, comp_mnemonics, jump_mnemonics)
+        mnemonics_to_bin = Translator(dest_mnemonics, comp_mnemonics,
+                                      jump_mnemonics)
 
         c_command_bin = '111' + mnemonics_to_bin.comp_bits + \
                         mnemonics_to_bin.dest_bits + mnemonics_to_bin.jump_bits
@@ -98,5 +95,4 @@ create_output_file(output)
 
 end = timer()
 
-print(
-    f'Assembly program successfuly parsed in {end - start:.2f} seconds')
+print(f'Assembly program successfuly parsed in {end - start:.2f} seconds')

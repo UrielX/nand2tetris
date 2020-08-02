@@ -15,7 +15,7 @@ class Parser:
     line_counter = 0
 
     def open_file(self, file):
-        '''Method removes whitespaces and comments of the provided 
+        '''Method removes whitespaces and comments of the provided
         assembler source file. If the file doesn't exist, exits the program.
         Returns a string'''
 
@@ -38,8 +38,10 @@ class Parser:
         '''Method removes (XXX) labels from the assembly program.
         Returns string'''
         labels_removed = ''
-        labels_removed_list = [line for line in self.assembly_program.splitlines(
-        ) if not line.startswith('(')]
+        labels_removed_list = [
+            line for line in self.assembly_program.splitlines()
+            if not line.startswith('(')
+        ]
 
         for line in labels_removed_list:
             labels_removed += line + '\n'
@@ -73,9 +75,10 @@ class Parser:
 
     def get_command_type(self, command):
         '''Method returns the type of the current CPU command:
-            A_COMMAND - for @xxx where xxx is either a symbol or a decimal number;
-            C_COMMAND - for dest=comp;jump;
-            L_COMMAND - pseudo-command for (XXX) where XXX is a symbol (label);'''
+            A_COMMAND-for @xxx where xxx is either a symbol or a decimal number
+            C_COMMAND-for dest=comp;jump;
+            L_COMMAND-pseudo-command for (XXX) where XXX is a symbol (label);
+        '''
 
         if command.startswith('@'):
             return 'A_COMMAND'
